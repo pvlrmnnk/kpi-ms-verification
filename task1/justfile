@@ -1,0 +1,19 @@
+alias b := build
+build:
+    verilator --binary --trace --Mdir build -j 0 top.sv
+
+alias l := lint
+lint:
+    verilator --lint-only -Wall top.sv
+
+alias r := run
+run:
+    -mkdir run
+    cd run && ./../build/Vtop 2>&1 | tee output.txt
+
+clean:
+    rm -rf build/ run/
+
+alias a := all
+all: lint build run
+    
