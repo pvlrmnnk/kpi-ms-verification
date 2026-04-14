@@ -1,0 +1,9 @@
+--binary
+--trace
+-sv
+--timing
+--assert
+--x-assign unique
+--x-initial unique
+--Mdir build
+-j 0
