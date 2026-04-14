@@ -5,5 +5,6 @@
 --assert
 --x-assign unique
 --x-initial unique
+-Wno-fatal
 --Mdir build
 -j 0

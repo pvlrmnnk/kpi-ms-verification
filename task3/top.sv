@@ -26,34 +26,32 @@ module top;
         $dumpvars(0);
     end
 
-    initial begin
-        clk = 0;
-        forever #5 clk = ~clk;
+    always begin
+        clk <= 0;
+        forever #5 clk <= ~clk;
     end
 
-    initial begin
-        $display("%d | sim started", $time);
-
+    always begin
         apply_reset();
 
-        wait (rst_n == 1); // not required in this case actually
+        wait(rst_n == 1);
 
         repeat (3) begin
             test_no++;
-            write_data($urandom_range(0, 255)[7:0]);
+            write_data($urandom_range(0, 255));
             check_output();
         end
 
         test_no++;
-        hold_data($urandom_range(0, 255)[7:0]);
+        hold_data($urandom_range(0, 255));
         check_output();
 
         repeat (10) begin
             test_no++;
             if ($urandom_range(0, 1) == 1)
-                write_data($urandom_range(0, 255)[7:0]);
+                write_data($urandom_range(0, 255));
             else
-                hold_data($urandom_range(0, 255)[7:0]);
+                hold_data($urandom_range(0, 255));
             check_output();
         end
 
@@ -64,18 +62,18 @@ module top;
 
     task automatic apply_reset();
         begin
-            rst_n = 0;
-            en = 0;
-            din = 0;
+            rst_n <= 0;
+            en <= 0;
+            din <= 0;
 
+            expected_dout <= 0;
             test_no = 0;
-            expected_dout = 0;
             pass_cnt = 0;
             fail_cnt = 0;
 
             repeat (3) @(posedge clk);
 
-            rst_n = 1;
+            rst_n <= 1;
         end
     endtask
 
@@ -83,10 +81,10 @@ module top;
         input logic [7:0] data
     );
         begin
-            en = 1;
-            din = data;
-            expected_dout = data;
+            en <= 1;
+            din <= data;
             @(posedge clk);
+            expected_dout <= data;
         end
     endtask
 
@@ -94,8 +92,8 @@ module top;
         input logic [7:0] data
     );
         begin
-            en = 0;
-            din = data;
+            en <= 0;
+            din <= data;
             @(posedge clk);
         end
     endtask
