@@ -34,7 +34,7 @@ module top;
 
     `ifdef VERILATOR
     always begin // workaround
-    `elsif
+    `else
     initial begin
     `endif
         clk <= 0;
@@ -43,7 +43,7 @@ module top;
 
     `ifdef VERILATOR
     always begin // workaround
-    `elsif
+    `else
     initial begin
     `endif
         rst_n <= 0;
@@ -57,7 +57,7 @@ module top;
 
     `ifdef VERILATOR
     always begin // workaround
-    `elsif
+    `else
     initial begin
     `endif
         test_no = 0;
