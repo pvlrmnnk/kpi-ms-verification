@@ -1,10 +1,10 @@
 alias b := build
 build:
-    verilator --binary --trace --assert -sv --timing --x-assign unique --x-initial unique --Mdir build -j 0 top.sv
+    verilator -F build.f top.sv
 
 alias l := lint
 lint:
-    -verilator --lint-only -Wall top.sv
+    -verilator --lint-only -Wall --cc lint.vlt top.sv
 
 alias r := run
 run:
