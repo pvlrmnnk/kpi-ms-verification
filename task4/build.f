@@ -1,0 +1,12 @@
+--binary
+--trace-fst
+--trace-structs
+-sv
+--timing
+--assert
+--x-assign unique
+--x-initial unique
+-Wno-fatal
+--Mdir build
+--prefix top_tb
+--j 0
