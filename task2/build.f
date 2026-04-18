@@ -1,5 +1,6 @@
 --binary
---trace
+--trace-fst
+--trace-structs
 -sv
 --timing
 --assert
@@ -7,4 +8,5 @@
 --x-initial unique
 -Wno-fatal
 --Mdir build
--j 0
+--prefix top_tb
+--j 0

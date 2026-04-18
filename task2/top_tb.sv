@@ -1,9 +1,10 @@
-`include "reg8.sv"
+`include "design.sv"
 
-module top;
+module top_tb;
 
-    logic clk;
-    logic rst_n;
+    bit clk;
+    bit rst_n;
+
     logic en;
     logic [7:0] din;
     wire  [7:0] dout;
@@ -27,32 +28,16 @@ module top;
     end
 
     initial begin
-        $display("%d | sim started", $time);
-        #200 $display("%d | sim finished", $time);
+        $display("%3d | sim started", $time);
+        #200 $display("%3d | sim finished", $time);
         $finish;
     end
 
-    `ifdef VERILATOR
-    always begin // workaround
-    `else
-    initial begin
-    `endif
-        clk <= 0;
-        forever #5 clk <= ~clk;
-    end
+    always #5 clk = ~clk;
 
-    `ifdef VERILATOR
-    always begin // workaround
-    `else
     initial begin
-    `endif
-        rst_n <= 0;
         repeat (3) @(posedge clk);
-        rst_n <= 1;
-
-        `ifdef VERILATOR
-        wait(0); // workaround
-        `endif
+        rst_n = 1;
     end
 
     `ifdef VERILATOR
@@ -60,9 +45,6 @@ module top;
     `else
     initial begin
     `endif
-        test_no = 0;
-        pass_cnt = 0;
-        fail_cnt = 0;
 
         expected_dout <= 0;
         en <= 0;
@@ -78,10 +60,16 @@ module top;
             expected_dout <= din;
             if (dout == expected_dout) begin 
                 pass_cnt++;
-                $display("%d | test %0d PASS | i=%0d o=%0d en=%0d ex=%0d", $time, test_no, din, dout, en, expected_dout);
+                $display(
+                    "%3d | test %2d PASS | i=%2H o=%2H en=%1d ex=%2H", 
+                    $time, test_no, din, dout, en, expected_dout
+                );
             end else begin
                 fail_cnt++;
-                $display("%d | test %0d FAIL | i=%0d o=%0d en=%0d ex=%0d", $time, test_no, din, dout, en, expected_dout);
+                $display(
+                    "%3d | test %2d FAIL | i=%2H o=%2H en=%1d ex=%2H", 
+                    $time, test_no, din, dout, en, expected_dout
+                );
             end
         end
 
@@ -91,10 +79,16 @@ module top;
         @(posedge clk);
         if (dout == expected_dout) begin 
             pass_cnt++;
-            $display("%d | test %0d PASS | i=%0d o=%0d en=%0d ex=%0d", $time, test_no, din, dout, en, expected_dout);
+            $display(
+                "%3d | test %2d PASS | i=%2H o=%2H en=%1d ex=%2H", 
+                $time, test_no, din, dout, en, expected_dout
+            );
         end else begin
             fail_cnt++;
-            $display("%d | test %0d FAIL | i=%0d o=%0d en=%0d ex=%0d", $time, test_no, din, dout, en, expected_dout);
+            $display(
+                "%3d | test %2d FAIL | i=%2H o=%2H en=%1d ex=%2H", 
+                $time, test_no, din, dout, en, expected_dout
+            );
         end
         
         repeat (10) begin
@@ -105,14 +99,23 @@ module top;
             expected_dout <= en ? din : expected_dout;
             if (dout == expected_dout) begin 
                 pass_cnt++;
-                $display("%d | test %0d PASS | i=%0d o=%0d en=%0d ex=%0d", $time, test_no, din, dout, en, expected_dout);
+                $display(
+                    "%3d | test %2d PASS | i=%2H o=%2H en=%1d ex=%2H", 
+                    $time, test_no, din, dout, en, expected_dout
+                );
             end else begin
                 fail_cnt++;
-                $display("%d | test %0d FAIL | i=%0d o=%0d en=%0d ex=%0d", $time, test_no, din, dout, en, expected_dout);
+                $display(
+                    "%3d | test %2d FAIL | i=%2H o=%2H en=%1d ex=%2H", 
+                    $time, test_no, din, dout, en, expected_dout
+                );
             end
         end
 
-        $display("%d | report | total=%0d pass=%0d fail=%0d", $time, test_no, pass_cnt, fail_cnt);
+        $display(
+            "%3d | report       | total=%0d pass=%0d fail=%0d", 
+            $time, test_no, pass_cnt, fail_cnt
+        );
 
         `ifdef VERILATOR
         wait(0); // workaround
