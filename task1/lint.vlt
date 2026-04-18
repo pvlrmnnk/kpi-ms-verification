@@ -1,0 +1,4 @@
+`verilator_config
+
+lint_off -rule WIDTHTRUNC -file "top_tb.sv"
+lint_off -rule DECLFILENAME -file "top_tb.sv"

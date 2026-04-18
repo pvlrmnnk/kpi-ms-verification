@@ -15,7 +15,7 @@ module top;
     // #2 waveform dump
     initial begin
         $dumpfile("dump.vcd");
-        $dumpvars(0);
+        $dumpvars();
     end
 
     // #3 continusos assignment
@@ -23,19 +23,19 @@ module top;
 
     // #4 start and finish
     initial begin
-        $display("%d | sim start", $time);
-        #60 $display("%d | sim finish", $time);
+        $display("%3d | sim start", $time);
+        #60 $display("%3d | sim finish", $time);
         $finish;
     end
 
     // #5 manual signal control
     initial begin
         sig_a = 0;
-        $display("%d | step_5 | sig_a=%d sig_b=%d", $time, sig_a, sig_b);
+        $display("%3d | step_5  | sig_a=%d sig_b=%d", $time, sig_a, sig_b);
         #10 sig_a = 1;
-        $display("%d | step_5 | sig_a=%d sig_b=%d", $time, sig_a, sig_b);
+        $display("%3d | step_5  | sig_a=%d sig_b=%d", $time, sig_a, sig_b);
         #10 sig_a = 0;
-        $display("%d | step_5 | sig_a=%d sig_b=%d", $time, sig_a, sig_b);
+        $display("%3d | step_5  | sig_a=%d sig_b=%d", $time, sig_a, sig_b);
     end
 
     // #6 clock generation
@@ -43,7 +43,7 @@ module top;
 
     always begin
         #5 clk = ~clk;
-        $display("%d | step_6 | clk=%d ", $time, clk);
+        $display("%3d | step_6  | clk=%d ", $time, clk);
     end
 
     // #7,8,9,10 magic with assignments
@@ -54,18 +54,15 @@ module top;
         `endif
     end
 
-    // CASE_A CASE_B CASE_C CASE_D
-    `define CASE_A
-
     initial begin
         `ifdef CASE_A
-        $display("%d | CASE_A", $time);
+        $display("%3d | CASE_A", $time);
         `elsif CASE_B
-        $display("%d | CASE_B", $time);
+        $display("%3d | CASE_B", $time);
         `elsif CASE_C
-        $display("%d | CASE_C", $time);
+        $display("%3d | CASE_C", $time);
         `elsif CASE_D
-        $display("%d | CASE_D", $time);
+        $display("%3d | CASE_D", $time);
         `endif
     end
 
@@ -79,7 +76,7 @@ module top;
         `elsif CASE_D
         sig_d <= sig_c;
         `endif
-        $display("%d | magic_1 | sig_c=%d sig_d=%d", $time, sig_c, sig_d);
+        $display("%3d | magic_1 | sig_c=%d sig_d=%d", $time, sig_c, sig_d);
     end
 
     always @(posedge clk) begin
@@ -92,7 +89,7 @@ module top;
         `elsif CASE_D
         sig_c <= ~sig_c;
         `endif
-        $display("%d | magic_2 | sig_c=%d sig_d=%d", $time, sig_c, sig_d);
+        $display("%3d | magic_2 | sig_c=%d sig_d=%d", $time, sig_c, sig_d);
     end
 
     // #11 counter
@@ -101,7 +98,7 @@ module top;
 
         repeat (5) begin
             #10 counter++;
-            $display("%d | counter | counter=%0d", $time, counter);
+            $display("%3d | counter | counter=%1H", $time, counter);
         end
     end
 
