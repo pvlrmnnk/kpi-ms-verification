@@ -24,7 +24,7 @@ module top_tb;
 
     initial begin
         $dumpfile("dump.vcd");
-        $dumpvars(0);
+        $dumpvars();
     end
 
     initial begin
