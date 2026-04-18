@@ -1,15 +1,15 @@
 alias b := build
 build:
-    verilator -F build.f top.sv
+    verilator -F build.f top_tb.sv
 
 alias l := lint
 lint:
-    -verilator --lint-only -Wall top.sv
+    -verilator --lint-only -Wall --cc lint.vlt top_tb.sv
 
 alias r := run
 run:
     -mkdir run
-    cd run && ./../build/Vtop 2>&1 | tee output.txt
+    cd run && ./../build/top_tb 2>&1 | tee output.txt
 
 clean:
     rm -rf build/ run/
