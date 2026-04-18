@@ -64,7 +64,7 @@ module top_tb;
     endtask
 
     task automatic run_rst();
-        repeat (2) @(negedge clk);
+        repeat (3) @(posedge clk);
         rst_n = 1;
     endtask
 
